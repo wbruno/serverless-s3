@@ -6,7 +6,7 @@ import {
   PutObjectCommand,
   GetObjectCommand,
 } from "@aws-sdk/client-s3";
-import sharp from "sharp";
+import Jimp from "jimp";
 
 const client = new S3Client({
   forcePathStyle: true,
@@ -40,7 +40,12 @@ export const s3hook = (event, context) => {
   client
     .send(new GetObjectCommand(get_param))
     .then((data) => streamToBuffer(data.Body))
-    .then((data) => sharp(data).resize(320).toBuffer())
+    .then(async (data) => {
+      // Redimensiona a imagem usando Jimp
+      const image = await Jimp.read(data);
+      image.resize(320, Jimp.AUTO);
+      return image.getBufferAsync(Jimp.MIME_JPEG);
+    })
     .then((data) => {
       const put_param = {
         Bucket: "local-bucket",
