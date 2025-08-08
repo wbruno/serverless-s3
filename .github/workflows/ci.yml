@@ -28,16 +28,24 @@ jobs:
 
       - name: test put_with_s3_event_response
         run: |
-          echo "Running tests for put_with_s3_event_response"
-          cd example/put_with_s3_event_response
-          npm install
-          npm start &
-          echo "Waiting for server to start..."
-          sleep 10
-          until curl -f http://localhost:3000/dev > /dev/null 2>&1; do
-            echo "Server not ready yet, waiting..."
-            sleep 2
-          done
-          echo "Server is ready, running tests..."
-          npm test
-          kill %1
+          ./example/test-example.sh put_with_s3_event_response
+
+      - name: test resize_image
+        run: |
+          ./example/test-example.sh resize_image
+
+      - name: test simple_event
+        run: |
+          ./example/test-example.sh simple_event
+
+      - name: test simple_event_python
+        run: |
+          ./example/test-example.sh simple_event_python
+
+      - name: test simple_put
+        run: |
+          ./example/test-example.sh simple_put
+
+      - name: test webpack_support
+        run: |
+          ./example/test-example.sh webpack_support
