@@ -5,6 +5,24 @@
 
 set -e
 
+# Função para cleanup que será executada ao sair do script
+cleanup() {
+    if [ ! -z "$SERVER_PID" ] && kill -0 $SERVER_PID 2>/dev/null; then
+        echo "Finalizando servidor..."
+        kill $SERVER_PID 2>/dev/null || true
+        # Aguardar um pouco para o processo terminar graciosamente
+        sleep 2
+        # Se ainda estiver rodando, forçar o término
+        if kill -0 $SERVER_PID 2>/dev/null; then
+            echo "Forçando término do servidor..."
+            kill -9 $SERVER_PID 2>/dev/null || true
+        fi
+    fi
+}
+
+# Registrar a função de cleanup para ser executada na saída do script
+trap cleanup EXIT
+
 if [ $# -eq 0 ]; then
     echo "Erro: Nome do exemplo é obrigatório"
     echo "Uso: $0 <nome-do-exemplo>"
@@ -33,6 +51,9 @@ cd "$EXAMPLE_DIR"
 echo "Instalando dependências..."
 npm install
 
+# Inicializar variável para PID do servidor
+SERVER_PID=""
+
 # Verificar se tem script de start (alguns exemplos podem não ter servidor)
 if npm run | grep -q "start"; then
     echo "Iniciando servidor..."
@@ -50,7 +71,9 @@ if npm run | grep -q "start"; then
     until curl -f http://localhost:3000/dev > /dev/null 2>&1; do
         if [ $RETRIES -ge $MAX_RETRIES ]; then
             echo "Erro: Servidor não iniciou após $MAX_RETRIES tentativas"
-            kill $SERVER_PID 2>/dev/null || true
+            if [ ! -z "$SERVER_PID" ]; then
+                kill $SERVER_PID 2>/dev/null || true
+            fi
             exit 1
         fi
         echo "Servidor ainda não está pronto, aguardando... (tentativa $((RETRIES + 1))/$MAX_RETRIES)"
@@ -64,11 +87,5 @@ fi
 # Executar testes
 echo "Executando testes..."
 npm test
-
-# Finalizar servidor se foi iniciado
-if [ ! -z "$SERVER_PID" ]; then
-    echo "Finalizando servidor..."
-    kill $SERVER_PID 2>/dev/null || true
-fi
 
 echo "Testes do exemplo '$EXAMPLE_NAME' concluídos com sucesso!"

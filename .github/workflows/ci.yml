@@ -13,39 +13,66 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  # Job para rodar testes em containers Docker
+  test-docker:
     runs-on: ubuntu-latest
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    
+    strategy:
+      matrix:
+        example: 
+          - put_with_s3_event_response
+          - resize_image
+          - simple_event
+          - simple_event_python
+          - simple_put
+          - webpack_support
+    
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
+
+      - name: Build Docker image for testing
+        run: |
+          docker build -f example/Dockerfile.test -t serverless-s3-test .
 
       - name: install
         run: |
           npm install
 
-      - name: test put_with_s3_event_response
+      - name: Run test in Docker container
         run: |
-          ./example/test-example.sh put_with_s3_event_response
+          docker run --rm \
+            -v ${{ github.workspace }}:/app \
+            -w /app \
+            serverless-s3-test \
+            ./example/test-example.sh ${{ matrix.example }}
 
-      - name: test resize_image
-        run: |
-          ./example/test-example.sh resize_image
-
-      - name: test simple_event
-        run: |
-          ./example/test-example.sh simple_event
-
-      - name: test simple_event_python
-        run: |
-          ./example/test-example.sh simple_event_python
-
-      - name: test simple_put
-        run: |
-          ./example/test-example.sh simple_put
-
-      - name: test webpack_support
-        run: |
-          ./example/test-example.sh webpack_support
+  # Job alternativo sem Docker (comentado por padrão)
+  # test-native:
+  #   runs-on: ubuntu-latest
+  #   
+  #   strategy:
+  #     matrix:
+  #       example: 
+  #         - put_with_s3_event_response
+  #         - resize_image
+  #         - simple_event
+  #         - simple_event_python
+  #         - simple_put
+  #         - webpack_support
+  #   
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '18'
+  #         cache: 'npm'
+  #     
+  #     - name: Install dependencies
+  #       run: npm ci
+  #     
+  #     - name: Test ${{ matrix.example }}
+  #       run: |
+  #         chmod +x ./example/test-example.sh
+  #         ./example/test-example.sh ${{ matrix.example }}
