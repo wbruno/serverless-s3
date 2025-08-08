@@ -9,7 +9,7 @@
     },
     "dependencies": {
         "serverless-s3": "file:../../src",
-        "sharp": "0.32.6"
+    "jimp": "^0.22.10"
     },
     "type": "module"
 }
