@@ -31,14 +31,14 @@ jobs:
       - name: Bump version
         id: bump_version
         run: |
-          pushd  serverless-s3-local
+          pushd  serverless-s3
           version=$(npm version ${{ github.event.inputs.bumpTarget }} --no-workspaces-update | tail -n 1)
           echo ::set-output name=VERSION::${version}
           popd
       - name: Commit pyproject.toml
         id: commit_pyproject_toml
         run: |
-          git add serverless-s3-local/package.json
+          git add serverless-s3/package.json
           git commit -m "chore(*): bump version to ${VERSION}"
         env:
           VERSION: ${{ steps.bump_version.outputs.VERSION }}

@@ -9202,7 +9202,7 @@ serverless-offline@13.9.0, serverless-offline@^13.0.0:
     velocityjs "^2.0.6"
     ws "^8.18.0"
 
-"serverless-s3-local@file:src":
+"serverless-s3@file:src":
   version "0.8.5"
   dependencies:
     "@aws-sdk/client-s3" "3.862.0"
