@@ -1,16 +1,12 @@
 {
-    "name": "serverless-s3-local",
+    "name": "@wbruno/serverless-s3",
     "version": "0.8.5",
     "author": "Masahiro Wada",
     "main": "index.js",
     "dependencies": {
-        "@aws-sdk/client-s3": "^3.53.1",
-        "fs-extra": "^11.0.0",
-        "rxjs": "^6.6.7",
-        "rxjs-compat": "^6.6.7",
+        "@aws-sdk/client-s3": "3.862.0",
         "s3rver": "^3.7.0",
-        "serverless-offline": "^13.0.0",
-        "shelljs": "^0.8.5"
+        "serverless-offline": "13.9.0"
     },
     "devDependencies": {
         "in-publish": "2.0.1"
@@ -23,7 +19,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/ar90n/serverless-s3-local.git"
+        "url": "git+https://github.com/wbruno/serverless-s3.git"
     },
     "keywords": [
         "serverless",
@@ -32,7 +28,7 @@
     ],
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/ar90n/serverless-s3-local/issues"
+        "url": "https://github.com/wbruno/serverless-s3/issues"
     },
-    "homepage": "https://github.com/ar90n/serverless-s3-local#readme"
+    "homepage": "https://github.com/wbruno/serverless-s3#readme"
 }

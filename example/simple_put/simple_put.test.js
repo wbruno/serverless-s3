@@ -1,4 +1,3 @@
-import got from 'got';
 import {S3Client, GetObjectCommand} from '@aws-sdk/client-s3'
 
 const client = new S3Client({
@@ -12,7 +11,8 @@ const client = new S3Client({
 });
 
 it('works with async/await', async () => {
-  const {body} = await got(`http://localhost:3000/dev`, {responseType: 'json'});
+  const response = await fetch(`http://localhost:3000/dev`);
+  const body = await response.json();
   expect(body).toEqual('ok');
 
   const streamToString = (stream) =>

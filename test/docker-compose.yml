@@ -3,10 +3,10 @@ version: '3.4'
 x-template: &example-template
     image: node
     volumes:
-      - ../:/serverless-s3-local:cached
+      - ../:/src:cached
       - work:/work
     working_dir: /work
-    command: sh -c "/serverless-s3-local/test/run_test.sh $${TARGET}"
+    command: sh -c "/src/test/run_test.sh $${TARGET}"
 
 services:
   put-with-s3-event-response:

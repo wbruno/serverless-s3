@@ -1,5 +1,5 @@
 TARGET=$1
-yarn --cwd /serverless-s3-local install
-yarn --cwd /serverless-s3-local workspace ${TARGET} install
-yarn --cwd /serverless-s3-local workspace ${TARGET} run start &
-/serverless-s3-local/test/wait-for-it.sh  -t 600 localhost:3000 -- yarn --cwd /serverless-s3-local workspace ${TARGET} run test
+npx yarn --cwd /src install
+npx yarn --cwd /src workspace ${TARGET} install
+npx yarn --cwd /src workspace ${TARGET} run start &
+/src/test/wait-for-it.sh  -t 600 localhost:3000 -- npx yarn --cwd /src workspace ${TARGET} run test
