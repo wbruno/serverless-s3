@@ -1,0 +1,17 @@
+{
+  "testEnvironment": "node",
+  "clearMocks": true,
+  "collectCoverage": true,
+  "coverageDirectory": "coverage",
+  "testMatch": [
+    "**/__tests__/**/*.js",
+    "**/?(*.)+(spec|test).js"
+  ],
+  "modulePathIgnorePatterns": [
+    "example",
+    "node_modules/"
+  ],
+  "testPathIgnorePatterns": [
+    "/node_modules/"
+  ]
+}

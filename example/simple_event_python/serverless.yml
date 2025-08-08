@@ -1,11 +1,11 @@
-service: serverless-s3-local-example
+service: serverless-s3-example
 
 provider:
   name: aws
   runtime: python3.8
 
 plugins:
-  - serverless-s3-local
+  - serverless-s3
   - serverless-offline
 
 custom:

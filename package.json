@@ -1,18 +1,34 @@
 {
-    "name": "serverless-s3-local-project",
-    "private": true,
-    "dependencies": {},
-    "devDependencies": {
-        "@aws-sdk/client-s3": "3.592.0",
-        "eslint": "9.4.0",
-        "eslint-config-airbnb-base": "15.0.0",
-        "eslint-plugin-import": "2.29.1",
-        "serverless": "3.39.0",
-        "got": "13.0.0",
-        "jest": "29.7.0"
+    "name": "@wbruno/serverless-s3",
+    "version": "0.8.5",
+    "author": "Masahiro Wada",
+    "main": "src/index.js",
+    "dependencies": {
+        "@aws-sdk/client-s3": "3.862.0",
+        "s3rver": "^3.7.0",
+        "serverless-offline": "13.9.0"
     },
-    "workspaces": [
-        "serverless-s3-local",
-        "example/*"
-    ]
+    "devDependencies": {
+        "in-publish": "2.0.1",
+        "jest": "30.0.5"
+    },
+    "scripts": {
+        "test": "jest",
+        "lint": "eslint --fix index.js",
+        "prepublish": "in-publish && cp ../README.md ./"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/wbruno/serverless-s3.git"
+    },
+    "keywords": [
+        "serverless",
+        "S3",
+        "AWS"
+    ],
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/wbruno/serverless-s3/issues"
+    },
+    "homepage": "https://github.com/wbruno/serverless-s3#readme"
 }

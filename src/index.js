@@ -1,9 +1,7 @@
 const S3rver = require("s3rver");
-const fs = require("fs-extra"); // Using fs-extra to ensure destination directory exist
-const shell = require("shelljs");
-const path = require("path");
-const { fromEvent } = require("rxjs");
-const { map, mergeMap } = require("rxjs/operators");
+const fs = require("node:fs");
+const { exec } = require("node:child_process");
+const path = require("node:path");
 
 const defaultOptions = {
   port: 4569,
@@ -15,10 +13,10 @@ const defaultOptions = {
 
 const removeBucket = ({ bucket, port }) =>
   new Promise((resolve, reject) => {
-    shell.exec(
+    exec(
       `aws --endpoint http://localhost:${port} s3 rb "s3://${bucket}" --force`,
-      { silent: true },
-      (code, stdout, stderr) => {
+      (error, stdout, stderr) => {
+        const code = error ? error.code : 0;
         if (code === 0) return resolve();
         if (stderr && stderr.indexOf("NoSuchBucket") !== -1) return resolve();
 
@@ -158,11 +156,14 @@ class ServerlessS3Local {
 
   subscriptionWebpackHandler() {
     return new Promise((resolve) => {
-      if (!this.s3eventSubscription) {
+      if (!this.s3EventHandler) {
         resolve();
       }
 
-      this.s3eventSubscription.unsubscribe();
+      // Remove the existing event listener
+      if (this.client && this.s3EventHandler) {
+        this.client.removeListener("event", this.s3EventHandler);
+      }
 
       this.subscribe();
       this.serverless.cli.log("constructor");
@@ -173,42 +174,41 @@ class ServerlessS3Local {
   subscribe() {
     this.eventHandlers = this.getEventHandlers();
 
-    const s3Event = fromEvent(this.client, "event");
+    // Create event handler function
+    this.s3EventHandler = (event) => {
+      const bucketName = event.Records[0].s3.bucket.name;
+      const { eventName } = event.Records[0];
+      const { key } = event.Records[0].s3.object;
 
-    this.s3eventSubscription = s3Event
-      .pipe(
-        map((event) => {
-          const bucketName = event.Records[0].s3.bucket.name;
-          const { eventName } = event.Records[0];
-          const { key } = event.Records[0].s3.object;
+      const matchingHandlers = this.eventHandlers
+        .filter((handler) => handler.name === bucketName)
+        .filter((handler) => eventName.match(handler.pattern) !== null)
+        .filter((handler) => {
+          const obj = handler.rules.reduce(
+            (acc, rule) => {
+              if (!acc.prefix && rule.prefix) {
+                acc.prefix = key.match(rule.prefix);
+              } else if (!acc.suffix && rule.suffix) {
+                acc.suffix = key.match(rule.suffix);
+              }
+              return acc;
+            },
+            {
+              prefix: !handler.rules.some((rule) => rule.prefix),
+              suffix: !handler.rules.some((rule) => rule.suffix),
+            }
+          );
+          return obj.prefix && obj.suffix;
+        });
 
-          return this.eventHandlers
-            .filter((handler) => handler.name === bucketName)
-            .filter((handler) => eventName.match(handler.pattern) !== null)
-            .filter((handler) => {
-              const obj = handler.rules.reduce(
-                (acc, rule) => {
-                  if (!acc.prefix && rule.prefix) {
-                    acc.prefix = key.match(rule.prefix);
-                  } else if (!acc.suffix && rule.suffix) {
-                    acc.suffix = key.match(rule.suffix);
-                  }
-                  return acc;
-                },
-                {
-                  prefix: !handler.rules.some((rule) => rule.prefix),
-                  suffix: !handler.rules.some((rule) => rule.suffix),
-                }
-              );
-              return obj.prefix && obj.suffix;
-            })
-            .map((handler) => () => handler.func(event));
-        }),
-        mergeMap((handler) => handler)
-      )
-      .subscribe((handler) => {
-        handler();
+      // Execute all matching handlers
+      matchingHandlers.forEach((handler) => {
+        handler.func(event);
       });
+    };
+
+    // Add event listener using native Node.js EventEmitter
+    this.client.on("event", this.s3EventHandler);
   }
 
   startHandler() {
@@ -231,7 +231,7 @@ class ServerlessS3Local {
       }
 
       const dirPath = this.options.directory || "./buckets";
-      fs.ensureDirSync(dirPath); // Create destination directory if not exist
+      fs.mkdirSync(dirPath, { recursive: true }); // Create destination directory if not exist
       const directory = fs.realpathSync(dirPath);
 
       const configs = [
@@ -305,6 +305,10 @@ class ServerlessS3Local {
 
   endHandler() {
     if (!this.options.noStart) {
+      // Remove event listener before closing
+      if (this.client && this.s3EventHandler) {
+        this.client.removeListener("event", this.s3EventHandler);
+      }
       this.client.close();
       this.serverless.cli.log("S3 local closed");
     }
@@ -639,3 +643,4 @@ class ServerlessS3Local {
 }
 
 module.exports = ServerlessS3Local;
+module.exports.removeBucket = removeBucket;

@@ -3,7 +3,7 @@ This example is a demo to launch s3rver with the start of serverless-offline.
 
 ## Start server
 ```
-$ cd serverless-s3-local
+$ cd serverless-s3
 $ yarn install
 $ yarn workspace simple-put run start
 ```

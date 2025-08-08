@@ -45,7 +45,7 @@ jobs:
       - name: Publish package
         run: |
           yarn install
-          pushd  serverless-s3-local
+          pushd  serverless-s3
           yarn publish
           popd
         env:

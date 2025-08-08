@@ -1,14 +1,11 @@
-serverless-s3-local
+serverless-s3
 ===============
 
-[![serverless](http://public.serverless.com/badges/v3.svg)](http://www.serverless.com)
-[![npm version](https://badge.fury.io/js/serverless-s3-local.svg)](https://badge.fury.io/js/serverless-s3-local)
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/amplify-education/serverless-domain-manager/master/LICENSE)
-[![npm downloads](https://img.shields.io/npm/dt/serverless-s3-local.svg?style=flat)](https://www.npmjs.com/package/serverless-s3-local)
+Drop in replacement for
+https://github.com/ar90n/serverless-s3-local
 
-**[`v0.9.X`](https://github.com/ar90n/serverless-s3-local/tree/v0.9.0) is under developing. This version will have BREAKING CHANGES.**
 
-serverless-s3-local is a Serverless plugin to run S3 clone in local.
+serverless-s3 is a Serverless plugin to run S3 clone in local.
 This is aimed to accelerate development of AWS Lambda functions by local testing.
 I think it is good to collaborate with serverless-offline.
 
@@ -16,12 +13,12 @@ Installation
 ===============
 Use npm
 ```bash
-npm install serverless-s3-local --save-dev
+npm install serverless-s3 --save-dev
 ```
 
 Use serverless plugin install
 ```bash
-sls plugin install --name serverless-s3-local
+sls plugin install --name serverless-s3
 ```
 
 Example
@@ -29,12 +26,12 @@ Example
 
 **serverless.yaml**
 ```yaml
-service: serverless-s3-local-example
+service: serverless-s3-example
 provider:
   name: aws
   runtime: nodejs18.x
 plugins:
-  - serverless-s3-local
+  - serverless-s3
   - serverless-offline
 custom:
 # Uncomment only if you want to collaborate with serverless-plugin-additional-stacks
@@ -67,31 +64,6 @@ functions:
       - s3: local-bucket
         event: s3:*
 
-```
-
-**handler.js (AWS SDK v2)**
-```js
-const AWS = require("aws-sdk");
-
-module.exports.webhook = (event, context, callback) => {
-  const S3 = new AWS.S3({
-    s3ForcePathStyle: true,
-    accessKeyId: "S3RVER", // This specific key is required when working offline
-    secretAccessKey: "S3RVER",
-    endpoint: new AWS.Endpoint("http://localhost:4569"),
-  });
-  S3.putObject({
-    Bucket: "local-bucket",
-    Key: "1234",
-    Body: new Buffer("abcd")
-  }, () => callback(null, "ok"));
-};
-
-module.exports.s3hook = (event, context) => {
-  console.log(JSON.stringify(event));
-  console.log(JSON.stringify(context));
-  console.log(JSON.stringify(process.env));
-};
 ```
 
 **handler.js (AWS SDK v3)**
@@ -226,32 +198,11 @@ custom:
     cors: ./path/to/cors.xml
 ```
 
-Running on Node 18 or higher
-===============
-You may meet an error such as following on Node 18 or higher.
-
-```
-Error: error:0308010C:digital envelope routines::unsupported
-      at Cipheriv.createCipherBase (node:internal/crypto/cipher:122:19)
-      at Cipheriv.createCipherWithIV (node:internal/crypto/cipher:141:3)
-      at new Cipheriv (node:internal/crypto/cipher:249:3)
-
-...
-```
-
-In this case, please set the following environemnt variable.
-
-```
-export NODE_OPTIONS=--openssl-legacy-provider
-```
 
 See also
 ===============
 * [s3rver](https://github.com/jamhall/s3rver)
 * [serverless-offline](https://github.com/dherault/serverless-offline)
-* [serverless-webpack](https://github.com/serverless-heaven/serverless-webpack)
-* [serverless-plugin-additional-stacks](https://github.com/SC5/serverless-plugin-additional-stacks)
-* [serverless-plugin-existing-s3](https://www.npmjs.com/package/serverless-plugin-existing-s3)
 
 License
 ===============

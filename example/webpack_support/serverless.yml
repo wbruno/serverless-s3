@@ -1,10 +1,10 @@
-service: serverless-s3-local-example
+service: serverless-s3-example
 provider:
   name: aws
   runtime: nodejs18.x
 plugins:
   - serverless-webpack
-  - serverless-s3-local
+  - serverless-s3
   - serverless-offline
 custom:
   webpackIncludeModules: true
