@@ -6,7 +6,7 @@ x-template: &example-template
       - ../:/src:cached
       - work:/work
     working_dir: /work
-    command: sh -c "/src/test/run_test.sh $${TARGET}"
+    command: sh -c "/src/docker/run_test.sh $${TARGET}"
 
 services:
   put-with-s3-event-response:

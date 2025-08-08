@@ -9,10 +9,11 @@
         "serverless-offline": "13.9.0"
     },
     "devDependencies": {
-        "in-publish": "2.0.1"
+        "in-publish": "2.0.1",
+        "jest": "30.0.5"
     },
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+        "test": "jest",
         "lint": "eslint index.js",
         "lint:fix": "eslint --fix index.js",
         "prepublish": "in-publish && cp ../README.md ./"

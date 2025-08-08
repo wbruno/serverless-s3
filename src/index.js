@@ -1,7 +1,7 @@
 const S3rver = require("s3rver");
 const fs = require("node:fs");
 const { exec } = require("node:child_process");
-const path = require("path");
+const path = require("node:path");
 
 const defaultOptions = {
   port: 4569,
@@ -643,3 +643,4 @@ class ServerlessS3Local {
 }
 
 module.exports = ServerlessS3Local;
+module.exports.removeBucket = removeBucket;
