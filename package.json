@@ -1,20 +1,34 @@
 {
     "name": "@wbruno/serverless-s3",
-    "private": true,
-    "scripts": {
-        "test": "jest test/index.test.js --coverage"
+    "version": "0.8.5",
+    "author": "Masahiro Wada",
+    "main": "src/index.js",
+    "dependencies": {
+        "@aws-sdk/client-s3": "3.862.0",
+        "s3rver": "^3.7.0",
+        "serverless-offline": "13.9.0"
     },
     "devDependencies": {
-        "@aws-sdk/client-s3": "3.862.0",
-        "jest": "30.0.5",
-        "osls": "3.52.0",
-        "@eslint/js": "9.32.0",
-        "eslint-plugin-jest": "29.0.1",
-        "eslint-plugin-n": "17.21.3",
-        "eslint-plugin-promise": "7.2.1"
+        "in-publish": "2.0.1",
+        "jest": "30.0.5"
     },
-    "workspaces": [
-        "src",
-        "example/*"
-    ]
+    "scripts": {
+        "test": "jest",
+        "lint": "eslint --fix index.js",
+        "prepublish": "in-publish && cp ../README.md ./"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/wbruno/serverless-s3.git"
+    },
+    "keywords": [
+        "serverless",
+        "S3",
+        "AWS"
+    ],
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/wbruno/serverless-s3/issues"
+    },
+    "homepage": "https://github.com/wbruno/serverless-s3#readme"
 }
