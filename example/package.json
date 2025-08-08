@@ -5,9 +5,5 @@
         "@aws-sdk/client-s3": "3.862.0",
         "jest": "30.0.5",
         "osls": "3.52.0"
-    },
-    "workspaces": [
-        "src",
-        "example/*"
-    ]
+    }
 }
