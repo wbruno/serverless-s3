@@ -1,9 +1,9 @@
 {
     "name": "@wbruno/serverless-s3",
-    "version": "0.8.5",
+    "version": "0.8.7",
     "author": "Masahiro Wada",
     "main": "src/index.js",
-    "private": true,
+    "private": false,
     "dependencies": {
         "@aws-sdk/client-s3": "3.862.0",
         "s3rver": "^3.7.0",
@@ -37,5 +37,8 @@
     "bugs": {
         "url": "https://github.com/wbruno/serverless-s3/issues"
     },
-    "homepage": "https://github.com/wbruno/serverless-s3#readme"
+    "homepage": "https://github.com/wbruno/serverless-s3#readme",
+    "publishConfig": {
+        "access": "public"
+    }
 }

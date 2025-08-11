@@ -13,12 +13,12 @@ Installation
 ===============
 Use npm
 ```bash
-npm install serverless-s3 --save-dev
+npm install @wbruno/serverless-s3 --save-dev
 ```
 
 Use serverless plugin install
 ```bash
-sls plugin install --name serverless-s3
+sls plugin install --name @wbruno/serverless-s3
 ```
 
 Example
