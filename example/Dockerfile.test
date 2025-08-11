@@ -1,0 +1,29 @@
+# Dockerfile para testes do serverless-s3
+FROM node:18-alpine
+
+# Instalar dependências do sistema necessárias
+RUN apk add --no-cache \
+    bash \
+    curl \
+    python3 \
+    py3-pip \
+    git \
+    openssh
+
+# Criar diretório de trabalho
+WORKDIR /app
+
+# Copiar arquivos de configuração do projeto principal
+COPY package*.json ./
+
+# Instalar dependências do Node.js
+RUN npm ci
+
+# Copiar código fonte
+COPY . .
+
+# Dar permissão de execução ao script
+RUN chmod +x ./example/test-example.sh
+
+# Comando padrão
+CMD ["bash"]
