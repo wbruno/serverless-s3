@@ -1,52 +1,74 @@
-# from https://dev.to/puku0x/github-actions-1mi5
-name: Release
+name: Release and Publish to NPM
 
 on:
-  pull_request:
-    branches:
-      - main
-    types: [closed]
+  push:
+    tags:
+      - 'v*'  # Trigger on version tags like v1.0.0
+  workflow_dispatch:  # Allow manual trigger
 
 jobs:
-  release:
-    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'bump-v')
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Get version
-        id: get_version
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linting
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Remove private flag
+        run: |
+          npm pkg set private=false
+
+      - name: Publish to NPM
+        run: npm publish --access public
         env:
-          HEAD_REF: ${{ github.event.pull_request.head.ref }}
-        run: echo ::set-output name=VERSION::${HEAD_REF#bump-v}
-      - name: Create Release
-        id: create_release
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  release:
+    needs: [test, publish]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create GitHub Release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ steps.get_version.outputs.VERSION }}
-          release_name: v${{ steps.get_version.outputs.VERSION }}
-          body: |+
-            ## Bug fixes
-            -
-
-            ## Features
-            -
-
-            ## BREAKING CHANGES
-            -
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
           draft: false
           prerelease: false
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - name: Install yarn
-        run: npm install -g yarn
-      - name: Publish package
-        run: |
-          yarn install
-          pushd  serverless-s3
-          yarn publish
-          popd
-        env:
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
