@@ -5092,7 +5092,7 @@ color-name@1.1.3:
   resolved "https://registry.npmjs.org/color-name/-/color-name-1.1.3.tgz"
   integrity sha512-72fSenhMw2HZMTVHeCA9KCmpEIbzWiQsjN+BHcBbS9vr1mtt+vJjPdksIBNUmKAW8TFUDPJK5SUU3QhE9NEXDw==
 
-color-string@^1.6.0, color-string@^1.9.0:
+color-string@^1.6.0:
   version "1.9.1"
   resolved "https://registry.npmjs.org/color-string/-/color-string-1.9.1.tgz"
   integrity sha512-shrVawQFojnZv6xM40anx4CkoDP+fZsw/ZerEMsW/pyzsRbElpsL/DBVW7q3ExxwusdNXI3lXpuhEZkzs8p5Eg==
@@ -5107,14 +5107,6 @@ color@^3.1.3:
   dependencies:
     color-convert "^1.9.3"
     color-string "^1.6.0"
-
-color@^4.2.3:
-  version "4.2.3"
-  resolved "https://registry.npmjs.org/color/-/color-4.2.3.tgz"
-  integrity sha512-1rXeuUUiGGrykh+CeBdu5Ie7OJwinCgQY0bc7GCRxy5xVHy+moaqkpL/jqQq0MtQOeYcrqEz4abc5f0KtU7W4A==
-  dependencies:
-    color-convert "^2.0.1"
-    color-string "^1.9.0"
 
 colorspace@1.1.x:
   version "1.1.4"
@@ -6438,6 +6430,11 @@ fs2@^0.3.9:
     ignore "^5.3.2"
     memoizee "^0.4.17"
     type "^2.7.3"
+
+fsevents@^2.3.3, fsevents@~2.3.2:
+  version "2.3.3"
+  resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
+  integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
 function-bind@^1.1.2:
   version "1.1.2"
@@ -8961,7 +8958,7 @@ pure-rand@^7.0.0:
   resolved "https://registry.npmjs.org/pure-rand/-/pure-rand-7.0.1.tgz"
   integrity sha512-oTUZM/NAZS8p7ANR3SHh30kXB+zK2r2BPcEn/awJIbOvq82WoMN4p62AWWp3Hhw50G0xMsw1mhIBLqHw64EcNQ==
 
-"put-with-s3-event-response@file:/app/example/put_with_s3_event_response":
+"put-with-s3-event-response@file:/Users/wmoraes/Sites/wbruno/serverless-s3/example/put_with_s3_event_response":
   version "1.0.0"
   resolved "file:example/put_with_s3_event_response"
   dependencies:
@@ -9192,7 +9189,7 @@ require-from-string@^2.0.2:
   resolved "https://registry.npmjs.org/require-from-string/-/require-from-string-2.0.2.tgz"
   integrity sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==
 
-"resize-image@file:/app/example/resize_image":
+"resize-image@file:/Users/wmoraes/Sites/wbruno/serverless-s3/example/resize_image":
   version "1.0.0"
   resolved "file:example/resize_image"
   dependencies:
@@ -9639,13 +9636,13 @@ signal-exit@^4.0.1, signal-exit@^4.1.0:
   resolved "https://registry.npmjs.org/signal-exit/-/signal-exit-4.1.0.tgz"
   integrity sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==
 
-"simple-event-python@file:/app/example/simple_event_python":
+"simple-event-python@file:/Users/wmoraes/Sites/wbruno/serverless-s3/example/simple_event_python":
   version "1.0.0"
   resolved "file:example/simple_event_python"
   dependencies:
     serverless-s3 "file:../../src"
 
-"simple-event@file:/app/example/simple_event":
+"simple-event@file:/Users/wmoraes/Sites/wbruno/serverless-s3/example/simple_event":
   version "1.0.0"
   resolved "file:example/simple_event"
   dependencies:
@@ -9660,7 +9657,7 @@ simple-git@^3.16.0:
     "@kwsites/promise-deferred" "^1.1.1"
     debug "^4.4.0"
 
-"simple-put@file:/app/example/simple_put":
+"simple-put@file:/Users/wmoraes/Sites/wbruno/serverless-s3/example/simple_put":
   version "1.0.0"
   resolved "file:example/simple_put"
   dependencies:
@@ -10591,7 +10588,7 @@ webpack-sources@^3.2.3:
   resolved "https://registry.npmjs.org/webpack-sources/-/webpack-sources-3.3.3.tgz"
   integrity sha512-yd1RBzSGanHkitROoPFd6qsrxt+oFhg/129YzheDGqeustzX0vTZJZsSsQjVQC4yzBQ56K55XU8gaNCtIzOnTg==
 
-"webpack-support@file:/app/example/webpack_support":
+"webpack-support@file:/Users/wmoraes/Sites/wbruno/serverless-s3/example/webpack_support":
   version "1.0.3"
   resolved "file:example/webpack_support"
   dependencies:
