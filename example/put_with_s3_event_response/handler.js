@@ -7,7 +7,7 @@ export const webhook = (event, context, callback) => {
       accessKeyId: "S3RVER",
       secretAccessKey: "S3RVER",
     },
-    endpoint: "http://0.0.0.0:8000",
+    endpoint: "http://localhost:8000",
   });
   client
     .send(
