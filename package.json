@@ -1,6 +1,6 @@
 {
     "name": "@wbruno/serverless-s3",
-    "version": "0.8.5",
+    "version": "0.8.6",
     "author": "Masahiro Wada",
     "main": "src/index.js",
     "private": true,
