@@ -226,6 +226,7 @@ class ServerlessS3Local {
         vhostBuckets,
       } = this.options;
       if (noStart) {
+        // eslint-disable-next-line promise/catch-or-return
         this.createBuckets().then(resolve, reject);
         return;
       }
@@ -268,6 +269,7 @@ class ServerlessS3Local {
         key = fs.readFileSync(path.resolve(httpsProtocol, "key.pem"), "ascii");
       }
 
+      // eslint-disable-next-line promise/catch-or-return
       import('serverless-offline/lambda').then(module => {
         this.lambdaHandler = module.default;
         this.client = new S3rver({
@@ -294,11 +296,11 @@ class ServerlessS3Local {
               `S3 local started ( port:${bindedPort}, family: ${family}, address: ${bindedAddress} )`
             );
 
-            resolve();
+            return resolve();
           }
         );
         this.serverless.cli.log("starting handler");
-        this.subscribe();
+        return this.subscribe();
       });
     });
   }
@@ -423,7 +425,7 @@ class ServerlessS3Local {
 
     this.service.getAllFunctions().forEach((functionKey) => {
       const functionDefinition = this.service.getFunction(functionKey);
-      lambda.create([{functionKey, functionDefinition}]); // eslint-disable-line no-underscore-dangle
+      lambda.create([{functionKey, functionDefinition}]);  
 
       const func = async (s3Event) => {
         const baseEnvironment = {

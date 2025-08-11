@@ -1,0 +1,44 @@
+services:
+  # Serviço base para testes
+  test-base:
+    build:
+      context: ..
+      dockerfile: example/Dockerfile.test
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+    volumes:
+      - ..:/app
+    working_dir: /app
+    environment:
+      - NODE_ENV=test
+
+  # Serviços específicos para cada exemplo
+  test-put-with-s3-event-response:
+    extends: test-base
+    container_name: test-put-with-s3-event-response
+    command: ./example/test-example.sh put_with_s3_event_response
+
+  test-resize-image:
+    extends: test-base
+    container_name: test-resize-image
+    command: ./example/test-example.sh resize_image
+
+  test-simple-event:
+    extends: test-base
+    container_name: test-simple-event
+    command: ./example/test-example.sh simple_event
+
+  test-simple-event-python:
+    extends: test-base
+    container_name: test-simple-event-python
+    command: ./example/test-example.sh simple_event_python
+
+  test-simple-put:
+    extends: test-base
+    container_name: test-simple-put
+    command: ./example/test-example.sh simple_put
+
+  test-webpack-support:
+    extends: test-base
+    container_name: test-webpack-support
+    command: ./example/test-example.sh webpack_support
