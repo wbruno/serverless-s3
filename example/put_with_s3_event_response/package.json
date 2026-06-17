@@ -10,8 +10,5 @@
     "dependencies": {
         "serverless-s3": "file:../../src"
     },
-    "devDependencies": {
-        "serverless-offline": "^13.0.0"
-    },
     "type": "module"
 }

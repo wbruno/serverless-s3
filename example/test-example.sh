@@ -47,9 +47,11 @@ echo "=================================="
 # Navegar para o diretório do exemplo
 cd "$EXAMPLE_DIR"
 
-# Instalar dependências
+# Instalar dependências (da raiz para garantir hoisting correto)
 echo "Instalando dependências..."
-npm install
+rm -rf "/app/$EXAMPLE_DIR/node_modules"
+cd /app && npm install
+cd "/app/$EXAMPLE_DIR"
 
 # Inicializar variável para PID do servidor
 SERVER_PID=""

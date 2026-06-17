@@ -1,5 +1,6 @@
 {
   "testEnvironment": "node",
+  "testRunner": "jest-circus/runner",
   "clearMocks": true,
   "collectCoverage": true,
   "coverageDirectory": "coverage",
