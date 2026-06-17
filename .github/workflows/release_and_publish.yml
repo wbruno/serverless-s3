@@ -32,6 +32,9 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -48,12 +51,10 @@ jobs:
 
       - name: Remove private flag
         run: |
-          npm pkg set private=false
+          npm pkg delete private
 
       - name: Publish to NPM
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --access public --workspaces=false --provenance
 
   release:
     needs: [test, publish]

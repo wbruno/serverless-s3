@@ -3,7 +3,6 @@
     "version": "0.8.7",
     "author": "Masahiro Wada",
     "main": "src/index.js",
-    "private": false,
     "dependencies": {
         "@aws-sdk/client-s3": "3.1070.0",
         "s3rver": "^3.7.0",
@@ -19,7 +18,8 @@
     },
     "scripts": {
         "test": "jest",
-        "lint": "npx eslint --fix src/index.js"
+        "lint": "npx eslint --fix src/index.js",
+        "release": "npm version patch && git push --follow-tags"
     },
     "repository": {
         "type": "git",
